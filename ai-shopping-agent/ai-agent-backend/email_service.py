@@ -782,7 +782,7 @@ class WeeklySummaryGenerator:
         # Get favorites statistics
         favorites_query = """
         SELECT COUNT(*) as new_favorites
-        FROM favorites
+        FROM favorite
         WHERE user_id = ? AND added_at > ?
         """
         new_favorites = conn.execute(favorites_query, (user_id, week_start.isoformat())).fetchone()[0]

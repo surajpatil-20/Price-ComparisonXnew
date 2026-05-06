@@ -192,8 +192,10 @@ function ShoppingApp() {
         language: 'en'
       });
 
-      setResults(response.data);
+      console.log('Search response:', response.data);
+      setResults(response.data || []);
     } catch (error) {
+      console.log('Search error:', error);
       setError(error.response?.data?.error || 'Search failed');
     } finally {
       setLoading(false);
@@ -477,12 +479,12 @@ function ShoppingApp() {
   };
 
   const filteredResults = results.filter(result =>
-    result.name.toLowerCase().includes(filterText.toLowerCase())
+    (result.name || '').toLowerCase().includes(filterText.toLowerCase())
   );
 
   const sortedResults = [...filteredResults].sort((a, b) => {
-    if (sortOption === "price") return a.price - b.price;
-    if (sortOption === "name") return a.name.localeCompare(b.name);
+    if (sortOption === "price") return (a.price || 0) - (b.price || 0);
+    if (sortOption === "name") return (a.name || '').localeCompare(b.name || '');
     if (sortOption === "rating") return (b.rating || 0) - (a.rating || 0);
     return 0;
   });
@@ -639,6 +641,18 @@ function ShoppingApp() {
                 onPriceAlert={handlePriceAlert}
               />
             ))}
+          </div>
+        </section>
+      )}
+
+      {results.length === 0 && !loading && !showFavorites && !showPriceAlerts && criteria.product && criteria.budget && (
+        <section className="results-section">
+          <div className="results-header">
+            <h3>No matching products found</h3>
+          </div>
+          <div className="no-results-message">
+            <p>We received search results, but none matched your budget or filter.</p>
+            <p>Try increasing your budget, changing the product name, or clearing the filter box.</p>
           </div>
         </section>
       )}

@@ -67,7 +67,7 @@ class ShoppingAnalytics:
         
         # Get favorites data
         favorites_query = """
-        SELECT * FROM favorites 
+        SELECT * FROM favorite 
         WHERE user_id = ? AND added_at >= ? AND added_at <= ?
         ORDER BY added_at DESC
         """

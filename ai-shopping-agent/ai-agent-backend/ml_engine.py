@@ -223,7 +223,7 @@ class UserProfiler:
     def _get_favorites(self, conn: sqlite3.Connection, user_id: int) -> List[Dict[str, Any]]:
         """Get user favorites"""
         query = """
-        SELECT * FROM favorites 
+        SELECT * FROM favorite 
         WHERE user_id = ? 
         ORDER BY added_at DESC
         """
@@ -611,7 +611,7 @@ class RecommendationEngine:
             query = """
             SELECT f.product_name, f.price, f.platform, f.user_id, f.added_at,
                    'favorite' as interaction_type, 1.0 as rating
-            FROM favorites f
+            FROM favorite f
             UNION ALL
             SELECT sh.query as product_name, sh.budget as price, 'search' as platform, 
                    sh.user_id, sh.created_at as added_at,
